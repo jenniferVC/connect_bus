@@ -29,6 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  sqflite:
+  path:
     
   #Firestore Database
   cloud_firestore: ^3.4.8

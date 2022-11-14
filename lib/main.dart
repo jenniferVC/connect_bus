@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_import
 
 import 'package:connect_bus/home_page.dart';
+import 'package:connect_bus/login.dart';
 import 'package:connect_bus/login_motorista.dart';
 import 'package:flutter/material.dart';
 import 'cadastro_passageiro.dart';
@@ -9,6 +10,8 @@ import 'main_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_core/firebase_core.dart';
+
+import 'src/widgets.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,13 +31,52 @@ class MyApp extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildButton(
-                'PASSAGEIRO', Colors.black, 167.0, Colors.black, Colors.white),
-            _buildButton(
-                'MOTORISTA', Colors.white, 167, Colors.black, Colors.black)
+            Builder(builder: (context) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Login()));
+                },
+                child: const Button('PASSAGEIRO', Colors.black, 167,
+                    Colors.black, Colors.white),
+              );
+            }),
+            Builder(builder: (context) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Login()));
+                },
+                child: const Button(
+                    'MOTORISTA', Colors.white, 167, Colors.black, Colors.black),
+              );
+            }),
           ],
         ),
       ),
+    );
+
+    Widget imageSection = Stack(
+      children: [
+        Image.asset(
+          'images/bus_home.png',
+          fit: BoxFit.cover,
+          width: 600,
+          height: 700,
+        ),
+        SizedBox(
+          height: 700,
+          child: Center(
+            child: Text(
+              'CONNECT BUS',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25.0,
+                  fontWeight: FontWeight.w400),
+            ),
+          ),
+        ),
+      ],
     );
 
     return MaterialApp(
@@ -43,28 +85,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         body: Column(
           children: [
-            Stack(
-              children: [
-                Image.asset(
-                  'images/bus_home.png',
-                  fit: BoxFit.cover,
-                  width: 600,
-                  height: 700,
-                ),
-                SizedBox(
-                  height: 700,
-                  child: Center(
-                    child: Text(
-                      'CONNECT BUS',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25.0,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            imageSection,
             buttonSection,
           ],
         ),
@@ -72,8 +93,9 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  // Método privado auxiliar que retorna um botão ao passar os dados por parâmetros
-  Container _buildButton(String textButton, Color colorTextButton,
+  // Método privado auxiliar que constrói um botão ao passar as características
+  // do botão nos parâmetros
+  Widget _buildButton(String textButton, Color colorTextButton,
       double widthButton, Color borderButton, Color backgroundButton) {
     return Container(
       height: 52.0,
